@@ -1,0 +1,104 @@
+#Question 1
+
+#creating function
+def fibgen(n):
+    """
+    Generates a Fibonacci series of length n.
+    """
+    fib = [0, 1]
+    for i in range(2, n):
+        fib.append(fib[i-1] + fib[i-2])
+    return fib
+
+#calling function
+print(fibgen(4))
+
+# question 2: create a todo_list 
+
+import psycopg2
+
+def create_table():
+    """
+    Creates a to-do list table in a Postgres database.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE todo_list (id SERIAL PRIMARY KEY, task TEXT, completed BOOLEAN)")
+    conn.commit()
+    conn.close()
+
+def add_task(task):
+    """
+    Adds a task to the to-do list.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO todo_list (task, completed) VALUES (%s, %s)", (task, False))
+    conn.commit()
+    conn.close()
+
+def complete_task(id):
+    """
+    Marks a task as completed in the to-do list.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("UPDATE todo_list SET completed = True WHERE id = %s", (id,))
+    conn.commit()
+    conn.close()
+
+def delete_task(id):
+    """
+    Deletes a task from the to-do list.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM todo_list WHERE id = %s", (id,))
+    conn.commit()
+    conn.close()
+
+def get_tasks():
+    """
+    Gets all tasks in the to-do list.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM todo_list")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+    
+
+
+#question 3: crude operation
+
+import psycopg2
+
+def create_database():
+    """
+    Creates a new Postgres database.
+    """
+    conn = psycopg2.connect(database="postgres", user="myuser", password="mypassword", host="localhost", port="5432")
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("CREATE DATABASE mydb")
+    conn.close()
+
+def create_table():
+    """
+    Creates a table in the mydb database.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE mytable (id SERIAL PRIMARY KEY, name TEXT, age INTEGER)")
+    conn.commit()
+    conn.close()
+
+def insert_record(name, age):
+    """
+    Inserts a record into the mytable table.
+    """
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypassword", host="localhost", port="5432")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO mytable (name, age) VALUES
+
