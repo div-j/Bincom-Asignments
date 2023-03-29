@@ -33,7 +33,7 @@ def add_task(task):
     cur.execute("INSERT INTO todo_list (task, completed) VALUES (%s, %s)", (task, False))
     conn.commit()
 
-def complete_task(id):
+def update(id):
     """
     Marks a task as completed in the to-do list.
     """
@@ -54,5 +54,7 @@ def get_tasks():
     """
     cur.execute("SELECT * FROM todo_list")
     rows = cur.fetchall()
-    conn.close()
     return rows
+    
+conn.close()
+ 
